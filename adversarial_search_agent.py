@@ -23,6 +23,10 @@ class ProblemFormulation:
     def utility(cls, state, player):
         raise NotImplementedError
 
+    @classmethod
+    def eval(cls, state, player):
+        raise NotImplementedError
+
 
 class AdversarialSearchAgent:
 

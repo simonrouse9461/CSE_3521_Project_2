@@ -17,6 +17,16 @@ class TicTacToe:
     def __eq__(self, other):
         return self.__list == other.__list
 
+    def __iter__(self):
+        for i in (0, 1, 2):
+            yield self.__list[i], self.__list[i + 3], self.__list[i + 6]
+        for i in (0, 3, 6):
+            yield self.__list[i], self.__list[i + 1], self.__list[i + 2]
+        for i in (0,):
+            yield self.__list[i], self.__list[i + 4], self.__list[i + 8]
+        for i in (2,):
+            yield self.__list[i], self.__list[i + 2], self.__list[i + 4]
+
     @property
     def tuple(self):
         temp_list = [*range(1, 10)]
@@ -49,24 +59,17 @@ class TicTacToe:
 
     @property
     def winner(self):
-        for i in (0, 1, 2):
-            if self.__list[i] == self.__list[i + 3] == self.__list[i + 6] != 0:
-                return self.__list[i]
-        for i in (0, 3, 6):
-            if self.__list[i] == self.__list[i + 1] == self.__list[i + 2] != 0:
-                return self.__list[i]
-        for i in (0,):
-            if self.__list[i] == self.__list[i + 4] == self.__list[i + 8] != 0:
-                return self.__list[i]
-        for i in (2,):
-            if self.__list[i] == self.__list[i + 2] == self.__list[i + 4] != 0:
-                return self.__list[i]
+        for first, second, third in self:
+            if first == second == third != 0:
+                return first
         for i in self.__list:
             if i == 0:
                 return None
         return 0
 
     def can_choose(self, position):
+        if not 1 <= position <= 9:
+            return False
         return self.__list[position - 1] == 0
 
     def choose(self, position):
@@ -109,4 +112,12 @@ class TicTacToeProblem(ProblemFormulation):
     @classmethod
     def utility(cls, state, player):
         return state.winner if state.winner == 0 or state.winner is None else 10 if state.winner == player else -10
+
+    @classmethod
+    def eval(cls, state, player):
+        x1, x2, o1, o2 = [0] * 4
+        for first, second, third in state:
+
+            p_count = 0
+            a_count = 0
 
