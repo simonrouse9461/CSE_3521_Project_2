@@ -1,7 +1,6 @@
 from adversarial_search_agent import *
 
 
-# This class is a representation of the puzzle game
 class TicTacToe:
 
     all_actions = [*range(1, 10)]
@@ -21,6 +20,8 @@ class TicTacToe:
     @property
     def tuple(self):
         temp_list = [*range(1, 10)]
+        if self.__list == [0] * 9:
+            return tuple(temp_list)
         for i, player in enumerate(self.__list):
             if player == 0:
                 temp_list[i] = ' '

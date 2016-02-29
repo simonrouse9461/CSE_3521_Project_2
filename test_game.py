@@ -15,6 +15,23 @@ class TicTacToeGame:
 
     class AI:
 
+        class Decision:
+
+            @staticmethod
+            def stochastic(actions):
+                action_list = [*actions]
+                return action_list[random.randint(0, len(action_list) - 1)]
+
+            @staticmethod
+            def choose_min(actions):
+                return min(actions)
+
+            @staticmethod
+            def choose_max(actions):
+                return max(actions)
+
+        Behavior = Decision.choose_min
+
         def __init__(self, name=None):
             self.name = name
 
@@ -22,15 +39,31 @@ class TicTacToeGame:
             print("{}'s turn: ".format(self.name))
             problem = TicTacToeProblem(state)
             agent = AdversarialSearchAgent(problem)
-            action_list = [*agent.minimax()[1]]
-            choice = action_list[random.randint(0, len(action_list) - 1)]
+            choice = TicTacToeGame.AI.Behavior(agent.minimax())
             state.choose(choice)
 
     def __init__(self, player1=Human(), player2=AI()):
-        if player1.name is None:
-            player1.name = 'Player1'
-        if player2.name is None:
-            player2.name = 'Player2'
+        if type(player1) is type(player2) is TicTacToeGame.AI:
+            if player1.name is None:
+                player1.name = 'Computer 1'
+            if player2.name is None:
+                player2.name = 'Computer 2'
+        if type(player1) is type(player2) is TicTacToeGame.Human:
+            if player1.name is None:
+                player1.name = 'Player 1'
+            if player2.name is None:
+                player2.name = 'Player 2'
+        if type(player1) is not type(player2):
+            if player1.name is None:
+                if type(player1) is TicTacToeGame.AI:
+                    player1.name = 'Computer'
+                else:
+                    player1.name = 'Player'
+            if player2.name is None:
+                if type(player2) is TicTacToeGame.AI:
+                    player2.name = 'Computer'
+                else:
+                    player2.name = 'Player'
         self.player1 = player1
         self.player2 = player2
         self.state = TicTacToe()
@@ -62,5 +95,5 @@ class TicTacToeGame:
                 break
 
 
-game = TicTacToeGame(TicTacToeGame.Human('Simon'), TicTacToeGame.AI('Computer'))
+game = TicTacToeGame(TicTacToeGame.Human(), TicTacToeGame.AI())
 game.start()

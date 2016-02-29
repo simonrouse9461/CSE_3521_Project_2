@@ -1,6 +1,3 @@
-import functools
-
-
 class ProblemFormulation:
 
     def __init__(self, initial_state):
@@ -73,4 +70,5 @@ class AdversarialSearchAgent:
         return min_utility, best_set
 
     def minimax(self):
-        return self.__max_utility_actions(self.problem.initial_state, self.problem.player(self.problem.initial_state))
+        return self.__max_utility_actions(self.problem.initial_state,
+                                          self.problem.player(self.problem.initial_state))[1]
