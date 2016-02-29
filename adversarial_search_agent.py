@@ -71,4 +71,4 @@ class AdversarialSearchAgent:
 
     def minimax(self):
         return self.__max_utility_actions(self.problem.initial_state,
-                                          self.problem.player(self.problem.initial_state))[1]
+                                          self.problem.player(self.problem.initial_state))

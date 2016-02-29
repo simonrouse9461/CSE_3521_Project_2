@@ -39,7 +39,7 @@ class TicTacToeGame:
             print("{}'s turn: ".format(self.name))
             problem = TicTacToeProblem(state)
             agent = AdversarialSearchAgent(problem)
-            choice = TicTacToeGame.AI.Behavior(agent.minimax())
+            choice = TicTacToeGame.AI.Behavior(agent.minimax()[1])
             state.choose(choice)
 
     def __init__(self, player1=Human(), player2=AI()):
