@@ -107,5 +107,5 @@ class TicTacToeProblem(ProblemFormulation):
 
     @classmethod
     def utility(cls, state, player):
-        return state.winner if state.winner == 0 or state.winner is None else 1 if state.winner == player else -1
+        return state.winner if state.winner == 0 or state.winner is None else 10 if state.winner == player else -10
 
