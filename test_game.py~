@@ -11,11 +11,8 @@ class TicTacToeGame:
             self.name = name
 
         def choose(self, state):
-            choose_number=int(input("{}'s turn: ".format(self.name)))
-            while not state.can_choose(choose_number):
-                print('invalid input number, please input again.\n')
-                choose_number=int(input("{}'s turn: ".format(self.name)))
-            state.choose(choose_number)
+            state.choose(int(input("{}'s turn: ".format(self.name))))
+
     class AI:
 
         class Decision:
