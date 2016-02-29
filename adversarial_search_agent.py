@@ -35,15 +35,18 @@ class AdversarialSearchAgent:
             raise TypeError('Subclass of ProblemFormulation expected!')
         self.problem = problem
 
-    def __max_utility_actions(self, state, player):
+    def __max_utility_actions(self, state, player, depth):
         if self.problem.terminal_test(state):
             return self.problem.utility(state, player), set()
+        if depth is not None and depth == 0:
+            return self.problem.eval(state, player), set()
         utility_map = dict()
         best_set = set()
         max_utility = None
         for action in self.problem.actions(state):
             result = self.problem.result(state, action)
-            min_utility, _ = self.__min_utility_actions(result, player)
+            next_depth = None if depth is None else depth - 1
+            min_utility, _ = self.__min_utility_actions(result, player, next_depth)
             utility_map[action] = min_utility
             if max_utility is None:
                 max_utility = min_utility
@@ -54,15 +57,18 @@ class AdversarialSearchAgent:
                 best_set.add(action)
         return max_utility, best_set
 
-    def __min_utility_actions(self, state, player):
+    def __min_utility_actions(self, state, player, depth):
         if self.problem.terminal_test(state):
             return self.problem.utility(state, player), set()
+        if depth is not None and depth == 0:
+            return self.problem.eval(state), set()
         utility_map = dict()
         best_set = set()
         min_utility = None
         for action in self.problem.actions(state):
             result = self.problem.result(state, action)
-            max_utility, _ = self.__max_utility_actions(result, player)
+            next_depth = None if depth is None else depth - 1
+            max_utility, _ = self.__max_utility_actions(result, player, next_depth)
             utility_map[action] = max_utility
             if min_utility is None:
                 min_utility = max_utility
@@ -75,4 +81,8 @@ class AdversarialSearchAgent:
 
     def minimax(self):
         return self.__max_utility_actions(self.problem.initial_state,
-                                          self.problem.player(self.problem.initial_state))
+                                          self.problem.player(self.problem.initial_state), None)
+
+    def h_minimax(self):
+        return self.__max_utility_actions(self.problem.initial_state,
+                                          self.problem.player(self.problem.initial_state), 4)

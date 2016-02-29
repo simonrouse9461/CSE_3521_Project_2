@@ -11,11 +11,18 @@ class TicTacToeGame:
             self.name = name
 
         def choose(self, state):
-            choose_number=int(input("{}'s turn: ".format(self.name)))
-            while not state.can_choose(choose_number):
+            try:
+                choose_number = int(input("{}'s turn: ".format(self.name)))
+            except:
+                choose_number = None
+            while choose_number is None or not state.can_choose(choose_number):
                 print('invalid input number, please input again.\n')
-                choose_number=int(input("{}'s turn: ".format(self.name)))
+                try:
+                    choose_number = int(input("{}'s turn: ".format(self.name)))
+                except:
+                    choose_number = None
             state.choose(choose_number)
+
     class AI:
 
         class Decision:
@@ -33,15 +40,26 @@ class TicTacToeGame:
             def choose_max(actions):
                 return max(actions)
 
-        def __init__(self, name=None, behavior=Decision.choose_min):
+        class Algorithm:
+
+            @staticmethod
+            def exact(agent):
+                return agent.minimax()[1]
+
+            @staticmethod
+            def approximate(agent):
+                return agent.h_minimax()[1]
+
+        def __init__(self, name=None, behavior=Decision.choose_min, algorithm=Algorithm.exact):
             self.name = name
             self.behavior = behavior
+            self.algorithm = algorithm
 
         def choose(self, state):
             print("{}'s turn: ".format(self.name))
             problem = TicTacToeProblem(state)
             agent = AdversarialSearchAgent(problem)
-            choice = self.behavior(agent.minimax()[1])
+            choice = self.behavior(self.algorithm(agent))
             state.choose(choice)
 
     def __init__(self, player1=Human(), player2=AI()):
@@ -95,7 +113,3 @@ class TicTacToeGame:
                 break
             if self.turn(self.player2):
                 break
-
-
-game = TicTacToeGame(TicTacToeGame.Human(), TicTacToeGame.AI())
-game.start()
