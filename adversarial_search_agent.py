@@ -79,10 +79,28 @@ class AdversarialSearchAgent:
                 best_set.add(action)
         return min_utility, best_set
 
-    def minimax(self):
+    def minimax_search(self):
         return self.__max_utility_actions(self.problem.initial_state,
                                           self.problem.player(self.problem.initial_state), None)
 
-    def h_minimax(self):
+    def minimax_values(self):
+        value_distribution = dict()
+        for action in self.problem.actions(self.problem.initial_state):
+            sub_problem = type(self.problem)(self.problem.result(self.problem.initial_state, action))
+            value_distribution[action] = \
+                self.__min_utility_actions(sub_problem.initial_state,
+                                           self.problem.player(self.problem.initial_state), None)[0]
+        return value_distribution
+
+    def h_minimax_search(self):
         return self.__max_utility_actions(self.problem.initial_state,
                                           self.problem.player(self.problem.initial_state), 4)
+
+    def h_minimax_values(self):
+        value_distribution = dict()
+        for action in self.problem.actions(self.problem.initial_state):
+            sub_problem = type(self.problem)(self.problem.result(self.problem.initial_state, action))
+            value_distribution[action] = \
+                self.__min_utility_actions(sub_problem.initial_state,
+                                           self.problem.player(self.problem.initial_state), 3)[0]
+        return value_distribution
