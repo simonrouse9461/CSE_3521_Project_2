@@ -35,7 +35,7 @@ class AdversarialSearchAgent:
             raise TypeError('Subclass of ProblemFormulation expected!')
         self.problem = problem
 
-    def __max_utility_actions(self, state, player, depth):
+    def __max_utility_actions(self, state, player, depth=None):
         if self.problem.terminal_test(state):
             return self.problem.utility(state, player), set()
         if depth is not None and depth == 0:
@@ -57,7 +57,7 @@ class AdversarialSearchAgent:
                 best_set.add(action)
         return max_utility, best_set
 
-    def __min_utility_actions(self, state, player, depth):
+    def __min_utility_actions(self, state, player, depth=None):
         if self.problem.terminal_test(state):
             return self.problem.utility(state, player), set()
         if depth is not None and depth == 0:
@@ -81,7 +81,7 @@ class AdversarialSearchAgent:
 
     def minimax_search(self):
         return self.__max_utility_actions(self.problem.initial_state,
-                                          self.problem.player(self.problem.initial_state), None)
+                                          self.problem.player(self.problem.initial_state))
 
     def minimax_values(self):
         value_distribution = dict()
@@ -89,7 +89,7 @@ class AdversarialSearchAgent:
             sub_problem = type(self.problem)(self.problem.result(self.problem.initial_state, action))
             value_distribution[action] = \
                 self.__min_utility_actions(sub_problem.initial_state,
-                                           self.problem.player(self.problem.initial_state), None)[0]
+                                           self.problem.player(self.problem.initial_state))[0]
         return value_distribution
 
     def h_minimax_search(self):
