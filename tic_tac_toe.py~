@@ -178,6 +178,7 @@ class TicTacToeGame:
                 return max(actions)
 
         class Algorithm:
+	evaluated = False
 
             @staticmethod
             def exact(agent):
@@ -191,16 +192,14 @@ class TicTacToeGame:
             self.name = name
             self.behavior = behavior
             self.algorithm = algorithm
-            self.evaluated = False
 
         def choose(self, state):
             print("{}'s turn: ".format(self.name))
             problem = TicTacToeProblem(state)
             agent = AdversarialSearchAgent(problem)
             evaluations = self.algorithm(agent)[1]
-            if self.evaluated is False:
-                print("evaluations:",evaluations)
-                self.evaluated = True
+	    
+            print("evaluations:", evaluations[1])
             choice = self.behavior(self.algorithm(agent)[0])
             state.choose(choice)
 
