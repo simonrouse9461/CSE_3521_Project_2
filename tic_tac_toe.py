@@ -3,7 +3,6 @@ from adversarial_search_agent import *
 
 
 class TicTacToe:
-    
 
     all_actions = [*range(1, 10)]
 
@@ -198,7 +197,7 @@ class TicTacToeGame:
             problem = TicTacToeProblem(state)
             agent = AdversarialSearchAgent(problem)
             evaluations = self.algorithm(agent)[1]
-            if self.evaluated is False:
+            if not self.evaluated:
                 print("evaluations:",evaluations)
                 self.evaluated = True
             choice = self.behavior(self.algorithm(agent)[0])
