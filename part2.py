@@ -2,8 +2,8 @@
 
 from tic_tac_toe import *
 
-game = TicTacToeGame(TicTacToeGame.AI(behavior=TicTacToeGame.AI.Decision.choose_min,
-                                      algorithm=TicTacToeGame.AI.Algorithm.approximate),
-                     TicTacToeGame.AI(behavior=TicTacToeGame.AI.Decision.choose_min,
-                                      algorithm=TicTacToeGame.AI.Algorithm.approximate))
+game = TicTacToeGame(AI(behavior=AI.Decision.choose_min,
+                        algorithm=AI.Algorithm.approximate),
+                     AI(behavior=AI.Decision.choose_min,
+                        algorithm=AI.Algorithm.approximate))
 game.start()
